@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hey…</title>
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  background: #ffeef3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+}
+
+.background {
+  position: absolute;
+  inset: 0;
+  font-size: 30px;
+  opacity: 0.7;
+  color: #f5a5c6;
+  display: flex;
+  flex-wrap: wrap;
+  pointer-events: none;
+}
+
+.background span {
+  margin: 10px;
+}
+
+.container {
+  position: relative;
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+  z-index: 1;
+}
+
+h1 {
+  color: #d6336c;
+}
+
+button {
+  margin: 10px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 20px;
+  background: #ff5fa2;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="background">
+  <!-- lots of T^T -->
+  <script>
+    for(let i=0;i<200;i++){
+      document.write("<span>T^T</span>");
+    }
+  </script>
+</div>
+
+<div class="container">
+  <h1>Are you angry with me?</h1>
+  <button onclick="goNext()">Yes</button>
+  <button onclick="goNext()">Obviously</button>
+</div>
+
+<script>
+function goNext(){
+  window.location.href = "page2.html";
+}
+</script>
+
+</body>
+</html>
