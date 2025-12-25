@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>I’m Sorry 💌</title>
+<style>
+/* BODY & BACKGROUND */
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  overflow: hidden;
+  background: linear-gradient(120deg, #fff0f6, #ffe6f0);
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+  position: relative;
+}
+
+@keyframes gradient {
+  0% {background-position:0% 50%;}
+  50% {background-position:100% 50%;}
+  100% {background-position:0% 50%;}
+}
+
+/* STARS / SPARKLES */
+.star {
+  position: absolute;
+  font-size: 12px;
+  color: #fff;
+  opacity: 0.6;
+  animation: starMove linear infinite;
+}
+@keyframes starMove {
+  0% {transform: translateY(0) scale(1);}
+  50% {transform: translateY(5px) scale(1.1);}
+  100% {transform: translateY(0) scale(1);}
+}
+
+/* HEADER */
+h2 {
+  margin-top: 20px;
+  color: #ff4d88;
+  font-size: 22px;
+}
+
+/* HEART GRID */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+  padding: 25px;
+  justify-items: center;
+}
+
+.flip {
+  width: 150px;
+  height: 140px;
+  perspective: 1000px;
+}
+
+.card {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+  cursor: pointer;
+}
+
+.card.flipped {
+  transform: rotateY(180deg);
+  animation: pop 0.2s;
+}
+
+.card:hover .heart {
+  box-shadow: 0 0 20px rgba(255, 77, 136, 0.6);
+  transform: rotate(-45deg) scale(1.05);
+}
+
+@keyframes pop {
+  0% {transform: scale(1);}
+  50% {transform: scale(1.1);}
+  100% {transform: scale(1);}
+}
+
+/* FACES */
+.face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.back { transform: rotateY(180deg); }
+
+/* HEART */
+.heart {
+  position: relative;
+  width: 120px;
+  height: 110px;
+  transform: rotate(-45deg);
+  background: #ffd1e8;
+  transition: all 0.3s;
+}
+
+.front .heart { background: #ff9ccf; }
+
+.heart::before,
+.heart::after {
+  content: "";
+  position: absolute;
+  width: 120px;
+  height: 110px;
+  background: inherit;
+  border-radius: 50%;
+}
+
+.heart::before { top: -55px; left: 0; }
+.heart::after { left: 55px; top: 0; }
+
+/* TEXT INSIDE HEART */
+.heart-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: rotate(45deg);
+  font-size: 22px;
+  font-weight: 800;
+  z-index: 2;
+}
+
+.front .heart-content { color: white; }
+.back .heart-content { color: #d6336c; }
+
+/* PETALS & CONFETTI */
+.petals {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.petal {
+  position: absolute;
+  top: -40px;
+  font-size: 30px;
+  animation: fall linear infinite;
+}
+
+@keyframes fall {
+  to { transform: translateY(120vh) rotate(360deg); }
+}
+
+/* NEXT BUTTON */
+#nextBtn {
+  position: fixed;
+  bottom: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 36px;
+  border-radius: 30px;
+  border: none;
+  font-size: 18px;
+  background: #ff4d88;
+  color: #fff;
+  cursor: pointer;
+  z-index: 10;
+  transition: bottom 0.8s;
+}
+
+/* MAIL */
+.mail {
+  width: 280px;
+  height: 180px;
+  background: #fff;
+  border-radius: 12px;
+  position: fixed;
+  bottom: -250px;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: bottom 1s;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  z-index: 7;
+}
+
+.mail.show { bottom: 50%; transform: translate(-50%, 50%); animation: bounce 0.5s; }
+
+@keyframes bounce {
+  0% { transform: translate(-50%, 55%) scale(0.9); }
+  50% { transform: translate(-50%, 50%) scale(1.05); }
+  100% { transform: translate(-50%, 50%) scale(1); }
+}
+
+.seal { position: absolute; top: 70px; left: 50%; transform: translateX(-50%); font-size: 36px; }
+.text { position: absolute; bottom: -40px; width: 100%; text-align: center; color: #d6336c; font-size: 16px; }
+
+/* LETTER */
+.letter {
+  position: absolute;
+  top: 20px;
+  left: 10px;
+  right: 10px;
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  display: none;
+  font-size: 14px;
+  color: #d6336c;
+  line-height: 1.5;
+  opacity: 0;
+  transition: opacity 1s;
+}
+.letter.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<h2>Tap each heart 💖</h2>
+
+<div class="cards" id="cardsContainer">
+  <div class="flip"><div class="card"><div class="face front"><div class="heart"><div class="heart-content">TAP</div></div></div><div class="face back"><div class="heart"><div class="heart-content">I</div></div></div></div></div>
+  <div class="flip"><div class="card"><div class="face front"><div class="heart"><div class="heart-content">TAP</div></div></div><div class="face back"><div class="heart"><div class="heart-content">AM</div></div></div></div></div>
+  <div class="flip"><div class="card"><div class="face front"><div class="heart"><div class="heart-content">TAP</div></div></div><div class="face back"><div class="heart"><div class="heart-content">REALLY</div></div></div></div></div>
+  <div class="flip"><div class="card"><div class="face front"><div class="heart"><div class="heart-content">TAP</div></div></div><div class="face back"><div class="heart"><div class="heart-content">SORRY</div></div></div></div></div>
+  <div class="flip"><div class="card"><div class="face front"><div class="heart"><div class="heart-content">TAP</div></div></div><div class="face back"><div class="heart"><div class="heart-content">MY</div></div></div></div></div>
+  <div class="flip"><div class="card"><div class="face front"><div class="heart"><div class="heart-content">TAP</div></div></div><div class="face back"><div class="heart"><div class="heart-content">BABY</div></div></div></div></div>
+</div>
+
+<div class="petals" id="petals"></div>
+<button id="nextBtn">NEXT →</button>
+
+<div class="mail" id="mail">
+  <div class="seal">💖</div>
+  <div class="text">Swipe up to open</div>
+  <div class="letter" id="letter">
+    I M REALLY SORRY MY BABY PLEASE FORGIVE ME MY PENGUIN…<br><br>
+    I M REALLYYYY SOOO SORRYYYY DARLING.. UMAHHHH PLEASE MANJAO NA…<br><br>
+    I MISS YOUUU SOOO MUCHHHH..<br>
+    I LOVEEEE YOUUUUUU SOOOOO MUCHHHHH FOREVER..<br><br>
+    MY YANU 💕
+  </div>
+</div>
+
+<script>
+// CREATE BACKGROUND STARS
+for(let i=0;i<40;i++){
+  const star = document.createElement('div');
+  star.className='star';
+  star.style.left = Math.random()*100+'vw';
+  star.style.top = Math.random()*100+'vh';
+  star.innerHTML='✨';
+  star.style.fontSize=(5+Math.random()*10)+'px';
+  star.style.animationDuration=(2+Math.random()*3)+'s';
+  document.body.appendChild(star);
+}
+
+// SOUND
+const popSound = new Audio('https://www.soundjay.com/button/sounds/button-16.mp3');
+
+let flipped = 0;
+const cards = document.querySelectorAll('.card');
+const petalsContainer = document.getElementById('petals');
+const nextBtn = document.getElementById('nextBtn');
+const mail = document.getElementById('mail');
+const letter = document.getElementById('letter');
+
+cards.forEach(card => {
+  card.addEventListener('click', () => {
+    if(card.classList.contains('flipped')) return;
+    card.classList.add('flipped');
+    popSound.play();
+    flipped++;
+    if(flipped === cards.length) startPetals();
+  });
+});
+
+function startPetals(){
+  for(let i=0;i<60;i++){
+    const p = document.createElement('div');
+    p.className='petal';
+    p.innerText = Math.random() < 0.5 ? '🌸' : '💖';
+    p.style.left=Math.random()*100+'vw';
+    p.style.animationDuration=(3+Math.random()*3)+'s';
+    petalsContainer.appendChild(p);
+  }
+  nextBtn.style.bottom='25px';
+}
+
+// NEXT BUTTON -> show mail
+nextBtn.addEventListener('click', ()=>{
+  nextBtn.style.display='none';
+  mail.classList.add('show');
+});
+
+// SWIPE UP TO SHOW LETTER
+let startY=0;
+mail.addEventListener('touchstart', e=>{ startY=e.touches[0].clientY; });
+mail.addEventListener('touchend', e=>{
+  if(startY - e.changedTouches[0].clientY > 50){
+    typeWriter(letter, letter.innerHTML);
+  }
+});
+
+// TYPEWRITER EFFECT
+function typeWriter(el,text){
+  el.style.display='block';
+  el.classList.add('show');
+  el.innerHTML='';
+  let i=0;
+  const interval=setInterval(()=>{
+    if(i<text.length){
+      el.innerHTML += text.charAt(i);
+      i++;
+    }else clearInterval(interval);
+  },30);
+}
+</script>
+</body>
+</html>
